@@ -21,7 +21,6 @@ public class Renderer {
 
         for (int i = 0;i < pixel.length; i++){
             pixel[i] += i;
-
         }
 
 
