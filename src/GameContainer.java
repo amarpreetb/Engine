@@ -1,10 +1,14 @@
 package com.AMax.Engine;
 
+import java.awt.event.KeyEvent;
+
 public class GameContainer implements Runnable{
 
     private Thread thread;
     private Window window;
     private Renderer renderer;
+    private Input input;
+    private AbstractGame game;
 
     private boolean running = false;
     private final double Update_Cap = 1.0/60.0;
@@ -12,54 +16,21 @@ public class GameContainer implements Runnable{
     private float scale = 1f;
     private String title = "Amax Engine";
 
-    public  GameContainer(){
-
+    public  GameContainer(AbstractGame game){
+        this.game = game;
     }
 
     public void start(){
 
         window = new Window(this);
-        thread = new Thread(this);
         renderer = new Renderer(this);
+        input = new Input(this);
+        thread = new Thread(this);
+
         thread.run();
 
     }
 
-    public Window getWindow() {
-        return window;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
-    public float getScale() {
-        return scale;
-    }
-
-    public void setScale(float scale) {
-        this.scale = scale;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
 
     public void stop(){
 
@@ -95,6 +66,13 @@ public class GameContainer implements Runnable{
                 render = true;
 
                 //Update Game
+                /*if(input.isKeyDown(KeyEvent.VK_A)){
+                    System.out.println("A");
+
+                }*/
+
+                game.update(this, (float)Update_Cap);
+                input.update();
 
                 if (frameTime >= 1.0){
                     frameTime = 0;
@@ -108,6 +86,7 @@ public class GameContainer implements Runnable{
 
             if(render){
                 renderer.clear();
+                game.render(this, renderer);
                 window.update();
                 frames++;
 
@@ -126,13 +105,58 @@ public class GameContainer implements Runnable{
 
     }
 
+
     private void dispose(){
 
     }
 
-    public static void main(String args[]){
-        GameContainer gc = new GameContainer();
-        gc.start();
+
+    public Window getWindow() {
+
+        return window;
     }
 
+    public int getWidth() {
+
+        return width;
+    }
+
+    public void setWidth(int width) {
+
+        this.width = width;
+    }
+
+    public int getHeight() {
+
+        return height;
+    }
+
+    public void setHeight(int height) {
+
+        this.height = height;
+    }
+
+    public float getScale() {
+
+        return scale;
+    }
+
+    public void setScale(float scale) {
+
+        this.scale = scale;
+    }
+
+    public String getTitle() {
+
+        return title;
+    }
+
+    public void setTitle(String title) {
+
+        this.title = title;
+    }
+
+    public Input getInput() {
+        return input;
+    }
 }
