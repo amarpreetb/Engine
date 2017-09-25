@@ -7,15 +7,17 @@ import com.AMax.Engine.Renderer;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import com.AMax.Engine.gfx.Image;
+import com.AMax.Engine.gfx.ImageTile;
 
 
 public class GameManager extends AbstractGame{
 
-    private Image image;
+    private ImageTile image;
 
 
     public GameManager(){
-        image = new Image("/Untitled.png");
+
+        image = new ImageTile("/Untitled.png", 16, 16);
     }
 
     @Override
@@ -23,12 +25,18 @@ public class GameManager extends AbstractGame{
         if (gc.getInput().isKey(KeyEvent.VK_A)){
             System.out.println("A");
         }
+
+        temp += dt * 20;
+        if(temp > 3){
+            temp = 0;
+        }
     }
+    float temp = 0;
 
     @Override
     public void render(GameContainer gc, Renderer r) {
     	
-    	r.drawImage(image, gc.getInput().getMouseX() - 32, gc.getInput().getMouseY() - 32);
+    	r.drawImageTile(image, gc.getInput().getMouseX() - 16, gc.getInput().getMouseY() - 16, (int)temp, 0);
 
     }
 
