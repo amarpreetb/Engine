@@ -3,6 +3,7 @@ package com.AMax.Engine;
 import java.awt.*;
 import java.awt.image.DataBufferInt;
 import com.AMax.Engine.gfx.Image;
+import com.AMax.Engine.gfx.ImageTile;
 
 public class Renderer {
 
@@ -78,6 +79,53 @@ public class Renderer {
         for(int y = yPos; y < heightPos; y++){
             for(int x = xPos; x < widthPos; x++){
                 setPixel(x + offX, y  +offY, image.getPixel()[x + y * image.getWidth()]);
+            }
+
+        }
+    }
+
+    public void drawImageTile(ImageTile image, int offX, int offY, int tileX, int tileY){
+        int xPos = 0;
+        int yPos = 0;
+        int widthPos = image.getTileWidth();
+        int heightPos = image.getTileHeight();
+
+        if(offX < -image.getTileWidth()){
+            return;
+        }
+
+        if(offY < -image.getTileHeight()){
+            return;
+        }
+
+        if(offX >= pixelWidth){
+            return;
+        }
+
+        if(offY >= pixelHeight){
+            return;
+        }
+
+        if(offX < 0){
+            xPos -= offX;
+        }
+
+        if(offY < 0){
+            yPos -= offY;
+        }
+
+
+        if(widthPos + offX >= pixelWidth){
+            widthPos -= widthPos + offX - pixelWidth;
+        }
+
+        if(heightPos + offY >= pixelHeight){
+            heightPos -= heightPos + offY - pixelHeight;
+        }
+
+        for(int y = yPos; y < heightPos; y++){
+            for(int x = xPos; x < widthPos; x++){
+                setPixel(x + offX, y  +offY, image.getPixel()[(x + tileX * image.getTileWidth()) + (y + tileY * image.getTileWidth()) * image.getTileWidth()]);
             }
 
         }
