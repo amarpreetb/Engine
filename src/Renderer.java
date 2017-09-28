@@ -4,11 +4,13 @@ import java.awt.*;
 import java.awt.image.DataBufferInt;
 import com.AMax.Engine.gfx.Image;
 import com.AMax.Engine.gfx.ImageTile;
+import com.AMax.Engine.gfx.Font;
 
 public class Renderer {
 
     private  int pixelWidth, pixelHeight;
     private  int[] pixel;
+    private Font font =  Font.STANDARD;
 
     public Renderer(GameContainer gc){
 
@@ -34,6 +36,26 @@ public class Renderer {
         }
 
         pixel[x + y * pixelWidth] = value;
+    }
+
+    public void drawText(String text, int offX, int offY, int color){
+        text.toUpperCase();
+        int offset = 0;
+
+        Image fontImage = font.getFontImage();
+
+        for (int i = 0; i < text.length(); i++ ){
+            int unicode = text.codePointAt(i) - 32;
+
+            for(int y = 0; y < fontImage.getHeight(); y++){
+                for(int x = 0; x < font.getWidths()[unicode]; x++){
+                    if(font.getFontImage().getPixel()[(x + font.getOffset()[unicode]) + y * font.getFontImage().getWidth()] == 0xffffffff){
+                        setPixel(x + offX + offset, y + offY, color);
+                    }
+                }
+            }
+            offset += font.getWidths()[unicode];
+        }
     }
 
     public void drawImage(Image image, int offX, int offY){
