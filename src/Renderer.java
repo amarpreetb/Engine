@@ -39,7 +39,7 @@ public class Renderer {
     }
 
     public void drawText(String text, int offX, int offY, int color){
-        text.toUpperCase();
+        text = text.toUpperCase();
         int offset = 0;
 
         Image fontImage = font.getFontImage();
