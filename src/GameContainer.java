@@ -12,9 +12,9 @@ public class GameContainer implements Runnable{
 
     private boolean running = false;
     private final double Update_Cap = 1.0/60.0;
-    private int width = 1200, height = 800;
-    private float scale = 1f;
-    private String title = "Amax Engine";
+    private int width = 320, height = 240;
+    private float scale = 3f;
+    private String title = "Amax Engine 1.0";
 
     public  GameContainer(AbstractGame game){
         this.game = game;
@@ -83,6 +83,7 @@ public class GameContainer implements Runnable{
                 renderer.clear();
                 game.render(this, renderer);
                 renderer.drawText("FPS:" + fps, 0, 0, 0xff00ffff);
+                renderer.drawText("PRESS A", 100, 100, 0xff00ffff);
                 window.update();
                 frames++;
 
